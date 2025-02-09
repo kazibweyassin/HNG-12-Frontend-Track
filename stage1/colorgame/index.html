@@ -304,7 +304,7 @@
 
             let displayColors = [...currentColors];
             shuffleArray(displayColors);
-            displayColors = displayColors.slice(0, 6); // Show only 6 options
+            displayColors = displayColors.slice(0, 6); 
             if (!displayColors.includes(correctColor)) {
                 displayColors[0] = correctColor;
                 shuffleArray(displayColors);
