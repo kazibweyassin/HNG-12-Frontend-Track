@@ -209,8 +209,10 @@
 
         <div class="timer">Time: <span id="timeLeft">30</span>s</div>
         
-        <div id="colorBox"></div>
-        <div id="colorOptions"></div>
+        <div data-testid="colorBox" id="colorBox"></div>
+        <div data-testid="colorOption" id="colorOptions"></div>
+    <!-- instruction for the game -->
+        <p data-testid="gameInstructions">Click on the color that matches the displayed color above.</p>
 
         <div class="stats-container">
             <div class="stat">
@@ -240,6 +242,8 @@
         
         let currentColors = easyColors;
         let correctColor = "";
+        let correctMessage = "Correct Color!";
+        let wrongMessage = "Wrong Color!";
         let score = 0;
         let highScore = localStorage.getItem('highScore') || 0;
         let streak = 0;
@@ -306,6 +310,7 @@
             shuffleArray(displayColors);
             displayColors = displayColors.slice(0, 6); 
             if (!displayColors.includes(correctColor)) {
+                
                 displayColors[0] = correctColor;
                 shuffleArray(displayColors);
             }
@@ -339,12 +344,32 @@
                 score += currentColors.length > 12 ? 3 : currentColors.length > 6 ? 2 : 1;
                 streak++;
                 correctSound.play();
+                const message = document.createElement('div');
+                message.textContent = correctMessage;
+                message.style.fontSize = '1.5rem';
+                message.style.color = 'green';
+                message.style.marginBottom = '10px';
+                document.querySelector('.game-container').insertBefore(message, document.getElementById("colorBox"));
+                setTimeout(() => {
+                    message.remove();
+                }, 1000);
+                dispatchEvent(new CustomEvent('correct'));
+            
                 document.getElementById("colorBox").classList.add("pulse");
                 setTimeout(() => {
                     document.getElementById("colorBox").classList.remove("pulse");
                 }, 500);
             } else {
                 wrongSound.play();
+                const message = document.createElement('div');
+                message.textContent = wrongMessage;
+                message.style.fontSize = '1.5rem';
+                message.style.color = 'red';
+                message.style.marginBottom = '10px';
+                document.querySelector('.game-container').insertBefore(message, document.getElementById("colorBox"));
+                setTimeout(() => {
+                    message.remove();
+                }, 1000);
                 streak = 0;
                 timeLeft = Math.max(timeLeft - 5, 0);
             }
