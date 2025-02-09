@@ -104,7 +104,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        .stats-container {
+        .scores-container {
             display: flex;
             justify-content: space-around;
             margin: 20px 0;
@@ -113,19 +113,19 @@
             border-radius: 15px;
         }
 
-        .stat {
+        .score {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .stat-label {
+        .score-label {
             font-size: 0.9rem;
             color: var(--secondary-color);
             margin-bottom: 5px;
         }
 
-        .stat-value {
+        .score-value {
             font-size: 1.5rem;
             font-weight: bold;
             color: var(--primary-color);
@@ -200,38 +200,39 @@
 <body>
     <div class="game-container">
         <h1>Color Guess</h1>
-        
+        <!-- Difficulty level -->
         <div class="difficulty-selector">
             <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
             <button class="difficulty-btn" data-difficulty="medium">Medium</button>
             <button class="difficulty-btn" data-difficulty="hard">Hard</button>
         </div>
-
+        <!-- Timer -->
         <div class="timer">Time: <span id="timeLeft">30</span>s</div>
         
         <div data-testid="colorBox" id="colorBox"></div>
         <div data-testid="colorOption" id="colorOptions"></div>
     <!-- instruction for the game -->
         <p data-testid="gameInstructions">Click on the color that matches the displayed color above.</p>
-
-        <div class="stats-container">
-            <div class="stat">
-                <span class="stat-label">Score</span>
-                <span class="stat-value" id="score">0</span>
+        <!-- scores -->
+        <div class="scores-container">
+            <div class="score">
+                <span class="score-label">Score</span>
+                <span class="score-value" id="score">0</span>
             </div>
-            <div class="stat">
-                <span class="stat-label">High Score</span>
-                <span class="stat-value" id="highScore">0</span>
+            <div data-testid="gamescoreus" class="score">
+                <span class="score-label">High Score</span>
+                <span class="score-value" id="highScore">0</span>
             </div>
-            <div class="stat">
-                <span class="stat-label">Streak</span>
-                <span class="stat-value" id="streak">0</span>
+            <div data-testid="score" class="score">
+                <span class="score-label">Streak</span>
+                <span  class="score-value" id="streak">0</span>
             </div>
         </div>
+        <!-- game button  -->
 
         <div class="game-buttons">
-            <button class="game-btn" id="newGameButton">New Game</button>
-            <button class="game-btn" id="resetButton">Reset Stats</button>
+            <button class="game-btn" data-testid="newGameButton" id="newGameButton">New Game</button>
+            <button class="game-btn" id="resetButton">Reset scores</button>
         </div>
     </div>
 
@@ -261,7 +262,7 @@
             }
         }
 
-        function updateStats() {
+        function updatescores() {
             document.getElementById("score").textContent = score;
             document.getElementById("highScore").textContent = highScore;
             document.getElementById("streak").textContent = streak;
@@ -296,7 +297,7 @@
             alert(`Game Over!\nFinal Score: ${score}\nBest Streak: ${bestStreak}`);
             score = 0;
             streak = 0;
-            updateStats();
+            updatescores();
         }
 
         function startGame() {
@@ -374,7 +375,7 @@
                 timeLeft = Math.max(timeLeft - 5, 0);
             }
             
-            updateStats();
+            updatescores();
             setTimeout(startGame, 1000);
         }
 
@@ -407,12 +408,12 @@
             highScore = 0;
             localStorage.setItem('highScore', 0);
             localStorage.setItem('bestStreak', 0);
-            updateStats();
+            updatescores();
             startGame();
         };
 
         // Initialize game
-        updateStats();
+        updatescores();
         startGame();
     </script>
 </body>
